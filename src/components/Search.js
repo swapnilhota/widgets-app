@@ -3,13 +3,14 @@ import axios from 'axios';
 
 const Search = () => {
 
-    const [term, setTerm] = useState('');
+    const [term, setTerm] = useState('programming');
+    const [results, setResults] = useState([]);
 
     //cant make the useEffect arrow function async, therefore need to write async function inside it
     useEffect(() => {
 
         const search = async () => {
-            const response = await axios.get('https://en.wikipedia.org/w/api.php', {
+            const { data } = await axios.get('https://en.wikipedia.org/w/api.php', {
                 params: {
                     action: 'query',
                     list: 'search',
@@ -19,12 +20,25 @@ const Search = () => {
                 }
             })
 
-            console.log(response);
+            setResults(data.query.search);
         };
 
         search();
 
     }, [term]);
+
+    const renderedResults = results.map((result) => {
+        return (
+            <div key={result.pageid} className="item">
+                <div className="content">
+                    <div className="header">
+                        {result.title}
+                    </div>
+                    <span dangerouslySetInnerHTML={{ __html: result.snippet }}></span>
+                </div>
+            </div>
+        );
+    })
 
     return (
         <div>
@@ -37,6 +51,9 @@ const Search = () => {
                         onChange={e => setTerm(e.target.value)}
                     />
                 </div>
+            </div>
+            <div className="ui celled list">
+                {renderedResults}
             </div>
         </div>
     );
