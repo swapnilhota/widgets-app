@@ -8,6 +8,10 @@ const Dropdown = ({ options, selected, onSelectedChange, label }) => {
     useEffect(() => {
         const onBodyClick = (event) => {
 
+            if (ref.current === null) {
+                return;
+            }
+
             if (ref.current.contains(event.target)) {
                 return;
             }
