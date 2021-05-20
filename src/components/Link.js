@@ -1,8 +1,15 @@
 import React from 'react';
 
-const Link = () => {
+const Link = ({ className, href, children }) => {
+
+    const onClick = (event) => {
+        event.preventDefault();
+    };
+
     return (
-        <a></a>
+        <a onClick={onClick} className={className} href={href}>
+            {children}
+        </a>
     );
 }
 
